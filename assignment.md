@@ -15,7 +15,25 @@ Question: From the `movies` collection, return the documents with the `plot` tha
 Answer:
 
 ```python
+# Select database and collection
+db = client["sample_mflix"]
+collection = db["movies"]
 
+# Build query
+query = {"plot": {"$regex": "^war", "$options": "i"}}  # plot starts with "war" (case-insensitive)
+projection = {"_id": 0, "title": 1, "plot": 1, "released": 1}
+
+# Execute query
+result = (
+    collection
+    .find(query, projection)
+    .sort("released", 1)   # ascending order
+    .limit(5)
+)
+
+# Print results
+for movie in result:
+    print(movie)
 ```
 
 ### Question 2
@@ -25,8 +43,22 @@ Question: Group by `rated` and count the number of movies in each.
 Answer:
 
 ```python
+# Select database and collection
+db = client["sample_mflix"]
+collection = db["movies"]
 
-```
+# Aggregation pipeline
+pipeline = [
+    {"$group": {"_id": "$rated", "count": {"$sum": 1}}},
+    {"$sort": {"count": -1}}  # optional, sorts by count descending
+]
+
+# Run the aggregation
+result = collection.aggregate(pipeline)
+
+# Print results
+for doc in result:
+    print(doc)
 
 ### Question 3
 
@@ -35,7 +67,11 @@ Question: Count the number of movies with 3 comments or more.
 Answer:
 
 ```python
+db = client["sample_mflix"]
+collection = db["movies"]
 
+count = collection.count_documents({"num_mflix_comments": {"$gte": 3}})
+print(count)
 ```
 
 ## Submission
