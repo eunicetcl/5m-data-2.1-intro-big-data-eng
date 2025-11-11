@@ -59,6 +59,7 @@ result = collection.aggregate(pipeline)
 # Print results
 for doc in result:
     print(doc)
+```
 
 ### Question 3
 
