@@ -50,7 +50,7 @@ collection = db["movies"]
 # Aggregation pipeline
 pipeline = [
     {"$group": {"_id": "$rated", "count": {"$sum": 1}}},
-    {"$sort": {"count": -1}}  # optional, sorts by count descending
+    {"$sort": {"count": -1}}  # optional, sorts by count descending highest to lowest
 ]
 
 # Run the aggregation
